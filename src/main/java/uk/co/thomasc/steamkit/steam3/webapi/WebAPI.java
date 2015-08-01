@@ -1,9 +1,12 @@
 package uk.co.thomasc.steamkit.steam3.webapi;
 
+import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -11,6 +14,8 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
+
+import javax.net.ssl.HttpsURLConnection;
 
 import uk.co.thomasc.steamkit.types.keyvalue.KeyValue;
 import uk.co.thomasc.steamkit.util.WebHelpers;
@@ -40,6 +45,58 @@ public final class WebAPI {
 	 * @return A {@link KeyValue} object representing the results of the Web API call.
 	 * @throws IOException A network error occurred when performing the request.
 	 */
+	
+	
+	public KeyValue KeyValueAuthenticate(String urlParameters)
+	{
+
+		try
+		{
+		String url = "https://api.steampowered.com/ISteamUserAuth/AuthenticateUser/v1";
+		URL obj = new URL(url);
+		HttpsURLConnection con = (HttpsURLConnection) obj.openConnection();
+		final String USER_AGENT = "Mozilla/5.0";
+		//add reuqest header
+		con.setRequestMethod("POST");
+		con.setRequestProperty("User-Agent", USER_AGENT);
+		con.setRequestProperty("Accept-Language", "en-US,en;q=0.5");
+ 
+		
+		// Send post request
+		con.setDoOutput(true);
+		DataOutputStream wr = new DataOutputStream(con.getOutputStream());
+		wr.writeBytes(urlParameters);
+		wr.flush();
+		wr.close();
+ 
+		int responseCode = con.getResponseCode();
+		System.out.println("\nSending 'POST' request to URL : " + url);
+		System.out.println("Post parameters : " + urlParameters);
+		System.out.println("Response Code : " + responseCode);
+ 
+		final InputStream is = con.getInputStream();
+		final byte[] tmp = new byte[2048];
+		int nRead;
+		final ByteArrayOutputStream buffer = new ByteArrayOutputStream();
+		while ((nRead = is.read(tmp, 0, tmp.length)) != -1) {
+			buffer.write(tmp, 0, nRead);
+		}
+		byte [] data = buffer.toByteArray();
+
+		final KeyValue kv = new KeyValue();
+
+		kv.readAsText(new ByteArrayInputStream(data));
+		
+		return kv;
+		
+		}
+		catch (Exception e)
+		{
+			return null;
+		}
+		
+	}
+	
 	public KeyValue call(String func, int version, Map<String, String> args, String method, boolean secure) throws IOException {
 		if (func == null) {
 			throw new IllegalArgumentException("func");
@@ -134,9 +191,11 @@ public final class WebAPI {
 		map.put("steamid", steamid);
 		map.put("sessionkey", sessionKey);
 		map.put("encrypted_loginkey", encryptedLoginKey);
-		map.put("method", method);
+		//map.put("method", method);
 		return tryInvokeMember("AuthenticateUser", map);
 	}
+	
+	
 
 	private KeyValue tryInvokeMember(String functionName, Map<String, String> apiArgs) {
 		String requestMethod = "GET";

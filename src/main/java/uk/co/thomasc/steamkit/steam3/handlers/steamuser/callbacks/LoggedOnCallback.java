@@ -72,6 +72,8 @@ public final class LoggedOnCallback extends CallbackMsg {
 	 * Gets the Steam2 CellID.
 	 */
 	@Getter private final int cellId;
+	
+	@Getter private final String webAPIUserNonce;
 
 	/**
 	 * Gets the Steam2 ticket.
@@ -96,6 +98,8 @@ public final class LoggedOnCallback extends CallbackMsg {
 		clientSteamID = new SteamID(resp.getClientSuppliedSteamid());
 
 		emailDomain = resp.getEmailDomain();
+		
+		webAPIUserNonce = resp.getWebapiAuthenticateUserNonce();
 
 		cellId = resp.getCellId();
 
