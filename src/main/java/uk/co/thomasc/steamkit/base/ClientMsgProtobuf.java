@@ -26,6 +26,7 @@ import uk.co.thomasc.steamkit.util.stream.BinaryWriter;
  */
 public final class ClientMsgProtobuf<U extends GeneratedMessage.Builder<U>> extends MsgBase<MsgHdrProtoBuf> {
 
+	//test
 	/**
 	 * Client messages of this type are always protobuf backed.
 	 */

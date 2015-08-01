@@ -1,0 +1,6 @@
+Manifest-Version: 1.0
+Built-By: Kuba
+Class-Path: protobuf-java-2.4.1.jar bcprov-ext-jdk14-1.47.jar
+Build-Jdk: 1.8.0_11
+Created-By: Maven Integration for Eclipse
+
