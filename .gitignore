@@ -1,0 +1,34 @@
+syntax: regexp
+
+# Java files         #
+######################
+*.class
+*.classpath
+
+# IntellIJ IDEA      #
+######################
+.idea/
+runtime/
+out/
+*.eml
+*.iml
+*.userlibraries
+
+# OS generated files #
+######################
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Maven              #
+######################
+target/
+pom.xml.tag
+pom.xml.releaseBackup
+pom.xml.versionsBackup
+pom.xml.next
+release.properties
