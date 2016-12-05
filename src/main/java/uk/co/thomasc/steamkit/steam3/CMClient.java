@@ -224,7 +224,13 @@ public abstract class CMClient {
 
 		final Random random = new Random();
 
-		final InetAddress server = CMClient.Servers[random.nextInt(CMClient.Servers.length)];
+		final InetAddress server;
+		try {
+			server = InetAddress.getByName("cm0.steampowered.com");
+		} catch (UnknownHostException e) {
+			throw new RuntimeException(e);
+		}
+
 		final IPEndPoint endPoint = new IPEndPoint(server, bEncrypted ? PortCM_PublicEncrypted : PortCM_Public);
 
 		connection.connect(endPoint);
