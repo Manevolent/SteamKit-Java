@@ -130,6 +130,7 @@ public class SteamID {
 	 * @param eUniverse	The universe the SteamID belongs to.
 	 */
 	public SteamID(String steamId, EUniverse eUniverse) {
+        this.steamid = new BitVector64(0x0);
 		setFromString(steamId, eUniverse);
 	}
 
@@ -172,25 +173,25 @@ public class SteamID {
 	 * @return	True if this instance was successfully assigned, or false if the given string was in an invalid format.
 	 */
 	public boolean setFromString(String steamId, EUniverse eUniverse) {
-		if (steamId == null || steamId.isEmpty()) {
-			return false;
-		}
+        if (steamId == null || steamId.isEmpty()) {
+            return false;
+        }
 
-		final Matcher m = SteamID.SteamIDRegex.matcher(steamId);
+        final Matcher m = SteamID.SteamIDRegex.matcher(steamId);
 
-		if (!m.matches()) {
-			return false;
-		}
+        if (!m.matches()) {
+            return false;
+        }
 
-		final int accId = Integer.parseInt(m.group("accountid"));
-		final int authServer = Integer.parseInt(m.group("authserver"));
+        final int accId = Integer.parseInt(m.group("accountid"));
+        final int authServer = Integer.parseInt(m.group("authserver"));
 
-		setAccountUniverse(eUniverse);
-		setAccountInstance(1);
-		setAccountType(EAccountType.Individual);
-		setAccountID(accId << 1 | authServer);
+        setAccountUniverse(eUniverse);
+        setAccountInstance(1);
+        setAccountType(EAccountType.Individual);
+        setAccountID(accId << 1 | authServer | 76561197960265728L);
 
-		return true;
+        return true;
 	}
 
 	/**
